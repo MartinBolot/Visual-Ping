@@ -1,0 +1,16 @@
+svg {
+    border: 1px solid #bbb;
+    width: 100%;
+}
+g {
+    width: 100%;
+}
+.tick text{
+    text-anchor: middle;
+}
+.average {
+    margin: 20px 0;
+}
+.average_value {
+    font-weight: bold;
+}
