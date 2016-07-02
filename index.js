@@ -35,7 +35,6 @@ app.get('/', (req, res) => {
 
 socket.on('connection', (connection) => {
     const emission = setInterval(() => {
-        // exec(`ping -n 1 ${url}`, handlePing);
         exec(`ping -n 1 ${url}`, (error, stdout) => {
             const time = stdout
                 ? stdout.substring(stdout.indexOf('temps='), stdout.indexOf(' ms '))
