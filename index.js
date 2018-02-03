@@ -34,19 +34,37 @@ app.get('/', (req, res) => {
 });
 
 socket.on('connection', (connection) => {
-    const emission = setInterval(() => {
-        exec(`ping -n 1 ${url}`, (error, stdout) => {
-            const time = stdout
-                ? stdout.substring(stdout.indexOf('temps='), stdout.indexOf(' ms '))
-                : '';
-            const ms = time ? time.replace('temps=', '') : '';
+    connection.emit('userAgentRequest');
+    connection.on('userAgentResponse', (message) => {
+        const command = (message === 'Windows') ? (
+          `ping -n 1 ${url}`
+        ) : (
+          `ping -c 1 ${url}`
+        );
+        setInterval(() => {
+            exec(command, (error, stdout) => {
+                let time;
+                let ms;
+                if (message === 'Windows') {
+                    time = stdout
+                        ? stdout.substring(stdout.indexOf('temps='), stdout.indexOf(' ms '))
+                        : '';
+                    ms = time ? time.replace('temps=', '') : '';
+                }
+                else {
+                    time = stdout
+                        ? stdout.substring(stdout.indexOf('time='), stdout.indexOf(' ms'))
+                        : '';
+                    ms = time ? time.replace('time=', '') : '';
+                }
 
-            connection.emit('ping', { time: ms });
+                connection.emit('ping', { time: ms });
 
-            return 0;
-        });
-    }, 1000);
+                return 0;
+            });
+        }, 1000);
+    });
     connection.on('disconnect', () => {
-        clearInterval(emission);
+        clearInterval();
     });
 });

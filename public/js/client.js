@@ -5,6 +5,19 @@ var time = 0;
 var average = 0;
 var MAX_DISPLAY = 30;
 
+// when a request for useragent is recieved
+socket.on('userAgentRequest', function(){
+  const appVersion = window.navigator ? window.navigator.appVersion : 'Windows';
+  let osType = '';
+  if(appVersion.indexOf('Win') != -1) {
+      osType = 'Windows';
+  }
+  else {
+      osType = 'Mac';
+  }
+  socket.emit('userAgentResponse', osType);
+});
+
 // when a ping command result is recieved
 socket.on('ping', function (pingResult) {
     if (pingResult) {
