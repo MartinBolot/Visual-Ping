@@ -10,5 +10,3 @@ It is aimed to be launched on your local computer :
 `git clone https://github.com/MartinBolot/Visual-Ping.git`  
 `npm start`  
 Then http://localhost:3000/
-
-**Windows only for now**
